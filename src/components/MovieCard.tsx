@@ -12,7 +12,7 @@ function MovieCard({ movie }: MovieCardProps) {
       <img
         className="w-full"
         src={movie.posterUrl}
-        alt={`poster off ${movie.title}`}
+        alt={`poster of ${movie.title}`}
       />
       <h3 className="mx-3 mt-2 mb-1 text-base font-bold">{movie.title}</h3>
       <p className="mx-3 mb-3 text-sm text-muted">
