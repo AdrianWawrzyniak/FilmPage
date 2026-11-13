@@ -1,13 +1,29 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import MovieGrid from "./components/MovieGrid";
-import { movies } from "./data/movies";
 import SearchBar from "./components/SearchBar";
+import type { Movie } from "./types/movie";
+import { getPopularMovies } from "./api/tmdb";
 
 function App() {
+  const [movies, setMovies] = useState<Movie[]>([]);
   const [query, setQuery] = useState("");
+
+  useEffect(() => {
+    let ignore = false;
+    getPopularMovies().then((data) => {
+      if (!ignore) {
+        setMovies(data);
+      }
+    });
+    return () => {
+      ignore = true;
+    };
+  }, []);
+
   const filteredMovies = movies.filter((movie) =>
     movie.title.toLowerCase().includes(query.toLowerCase()),
   );
+
   return (
     <main className="mx-auto max-w-7xl p-6">
       <h1 className="mb-10 text-6xl font-bold">FilmPage</h1>
