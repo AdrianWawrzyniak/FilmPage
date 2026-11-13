@@ -9,11 +9,17 @@ function MovieCard({ movie }: MovieCardProps) {
 
   return (
     <article className="overflow-hidden rounded-lg bg-card">
-      <img
-        className="w-full"
-        src={movie.posterUrl}
-        alt={`poster of ${movie.title}`}
-      />
+      {movie.posterUrl ? (
+        <img
+          className="w-full"
+          src={movie.posterUrl}
+          alt={`poster of ${movie.title}`}
+        />
+      ) : (
+        <div className="flex aspect-2/3 items-center justify-center bg-muted/20 text-sm text-muted">
+          No poster
+        </div>
+      )}
       <h3 className="mx-3 mt-2 mb-1 text-base font-bold">{movie.title}</h3>
       <p className="mx-3 mb-3 text-sm text-muted">
         {year} · ⭐ {movie.rating.toFixed(1)}

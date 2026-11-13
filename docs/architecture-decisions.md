@@ -24,20 +24,32 @@ Styling is done with Tailwind utility classes. The reasons:
 - spacing, colors and font sizes come from one scale, which keeps the UI consistent,
 - only the classes that are actually used end up in the final CSS file.
 
-Colors are defined once in `@theme` in `src/index.css` with names based on their role (`background`, `card`, `foreground`, `muted`, `accent`)
+Colors are defined once in `@theme` in `src/index.css` with names based on their role (`background`, `card`, `foreground`, `muted`, `accent`).
 
 ## Project structure
 
 ```
 src/
+  api/          TMDB client and response mapping
   components/   UI components
   types/        shared TypeScript types
-  data/         mock data
 ```
 
 Grouping by file type is enough for now. If the app grows, I will switch to grouping by feature (`features/search/`, `features/watchlist/`).
 
 For types, I use `interface` for object shapes and `type` for unions and aliases.
+
+## TMDB API
+
+Movies come from the TMDB API. All requests live in `src/api/tmdb.ts`, so components only call functions like `getPopularMovies()` and never deal with URLs, headers or the token.
+
+TMDB returns its own shape (`poster_path`, `vote_average`, …). The API layer maps it to the app's `Movie` type right after the response arrives, so the rest of the app does not depend on TMDB's format. If the source changes, only that file changes.
+
+Data is fetched in `useEffect` with a cleanup flag, so a response that arrives after the component unmounts is ignored. The request state is a single union (`"loading" | "error" | "success"`) instead of separate `isLoading`/`isError` booleans, which would allow impossible combinations.
+
+The token is stored in `.env.local` (gitignored) and read through `import.meta.env`. Because this is a client-side app, Vite embeds the token in the JavaScript bundle, so anyone can read it in the browser. That is acceptable here since it is a free, read-only TMDB token. For a paid or sensitive API, requests would go through a small backend proxy (e.g. a serverless function) that keeps the key on the server.
+
+Per TMDB's terms, the footer credits TMDB as the data source.
 
 ## Git workflow
 
