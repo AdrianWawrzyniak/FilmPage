@@ -13,3 +13,14 @@ export interface TmdbMovieListResponse {
   total_pages: number;
   total_results: number;
 }
+
+interface TmdbGenre {
+  id: number;
+  name: string;
+}
+
+export interface TmdbMovieDetails extends TmdbMovie {
+  backdrop_path: string | null;
+  genres: TmdbGenre[];
+  runtime: number | null;
+}

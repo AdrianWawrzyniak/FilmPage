@@ -6,3 +6,9 @@ export interface Movie {
   releaseDate: string;
   rating: number;
 }
+
+export interface MovieDetails extends Movie {
+  backdropUrl: string | null;
+  genres: string[];
+  runtime: number | null;
+}
